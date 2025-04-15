@@ -260,7 +260,7 @@
         color: var(--white);
     }
     
-    /* styles.css */
+    /* Update the mobile menu button styles */
     .mobile-menu-button {
         display: none;
         background: none;
@@ -272,21 +272,15 @@
         z-index: 1000;
         padding: 10px;
         display: flex;
-        align-items: center; /* Add this to align items vertically */
-        gap: 8px; /* Add small gap between icon and text */
+        align-items: center;
+        gap: 4px; /* Reduced gap between icon and text */
     }
 
-    .menu-title {
-        margin-left: 35px;
-        color: var(--white);
-        font-size: 16px;
-        font-weight: bold;
-    }
     .menu-icon {
-        color: #ffffff;
+        font-size: 32px; /* Increased size to match logo */
+        color: var(--white);
         display: flex;
-        flex-direction: column;
-        gap: 8px;
+        align-items: center;
     }
 
     /* Hide mega menu by default on mobile */
@@ -370,13 +364,6 @@
         height: 2px;
         background-color: var(--white); /* Ensure dashes are white */
         transition: all 0.3s ease;
-    }
-
-    .menu-title {
-        color: var(--white);
-        font-size: 18px;
-        font-weight: bold;
-        margin-left: 12px; /* Reduce margin to bring text closer */
     }
 
     .mobileNav.active .menu-dash {
@@ -581,17 +568,10 @@
         </header>
         <button id="mobile-menu-btn" class="mobile-menu-button">
             <span class="menu-icon">☰</span>
-            <span class="menu-title">MENU</span>
         </button>
         <!-- Update the mobile navigation HTML -->
         <div class="mobileNav" :class="{ 'active': mobileMenuOpen }">
             <div class="container">
-                <div class="menu-dash">
-                    <span class="dash"></span>
-                    <span class="dash"></span>
-                    <span class="dash"></span>
-                    <span class="menu-title">MENU</span>
-                </div>
                 <nav>
                     <a href="/our-company">Our Company</a>
                     <a href="/products">Our Products</a>
