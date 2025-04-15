@@ -259,7 +259,56 @@
         cursor: pointer;
         color: var(--white);
     }
+    
+    /* styles.css */
+    .mobile-menu-button {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        z-index: 1000;
+    }
 
+    .menu-icon {
+        color: #333;
+    }
+
+    /* Hide mega menu by default on mobile */
+    @media screen and (max-width: 768px) {
+        .mega-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+
+        .mega-menu.active {
+            display: block;
+        }
+
+        .mobile-menu-button {
+            display: block;
+        }
+
+        /* Adjust existing mega menu styles for mobile */
+        .mega-menu-content {
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .mega-menu-column {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+    }
     .mobileNav {
         display: none;
         position: fixed;
@@ -477,7 +526,9 @@
                 </div>
             </div>
         </header>
-
+        <button id="mobile-menu-btn" class="mobile-menu-button">
+            <span class="menu-icon">☰</span>
+        </button>
         <div class="mobileNav" :class="{ 'active': mobileMenuOpen }">
             <div class="container">
                 <nav>
@@ -539,97 +590,126 @@
         </footer>
     </div>
 
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                activeMenu: null,
-                mobileMenuOpen: false,
-                currentTheme: 'default'
+ <!-- Replace the entire script section in your index.html -->
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            activeMenu: null,
+            mobileMenuOpen: false,
+            currentTheme: 'default'
+        },
+        methods: {
+            menuIsOpen(menu) {
+                return this.activeMenu === menu;
             },
-            methods: {
-                menuIsOpen(menu) {
-                    return this.activeMenu === menu;
-                },
-                openMenu(menu) {
-                    this.activeMenu = menu;
-                },
-                closeMenus() {
-                    this.activeMenu = null;
-                },
-                toggleMobileMenu() {
-                    this.mobileMenuOpen = !this.mobileMenuOpen;
-                },
-                changeTheme(color) {
-                    const root = document.documentElement;
-                    
-                    // Reset to default
-                    root.style.setProperty('--secondary', '#c0b561');
-                    root.style.setProperty('--primary', '#373a36');
-                    document.body.style.backgroundColor = '#ffffff';
-                    
-                    // Apply new theme color
-                    switch(color) {
-                        case 'green':
-                            root.style.setProperty('--secondary', 'var(--theme-green)');
-                            root.style.setProperty('--primary', 'var(--theme-green-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-green-bg)';
-                            break;
-                        case 'blue':
-                            root.style.setProperty('--secondary', 'var(--theme-blue)');
-                            root.style.setProperty('--primary', 'var(--theme-blue-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-blue-bg)';
-                            break;
-                        case 'red':
-                            root.style.setProperty('--secondary', 'var(--theme-red)');
-                            root.style.setProperty('--primary', 'var(--theme-red-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-red-bg)';
-                            break;
-                        case 'pink':
-                            root.style.setProperty('--secondary', 'var(--theme-pink)');
-                            root.style.setProperty('--primary', 'var(--theme-pink-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-pink-bg)';  // Removed extra parenthesis
-                            break;
-                        case 'brown':
-                            root.style.setProperty('--secondary', 'var(--theme-brown)');
-                            root.style.setProperty('--primary', 'var(--theme-brown-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-brown-bg)';
-                            break;
-                        case 'silver':
-                            root.style.setProperty('--secondary', 'var(--theme-silver)');
-                            root.style.setProperty('--primary', 'var(--theme-silver-primary)');
-                            document.body.style.backgroundColor = 'var(--theme-silver-bg)';
-                            break;
-                    }
-                    
-                    // Update hero background
-                    const hero = document.querySelector('.hero');
-                    if (hero) {
-                        hero.style.backgroundColor = `var(--${color}-primary)`;
-                        hero.style.backgroundBlendMode = 'overlay';
-                    }
-                    
-                    localStorage.setItem('selectedTheme', color);
-                    this.currentTheme = color;
-                }
-            },  // Added comma here
-            mounted() {
-                const savedTheme = localStorage.getItem('selectedTheme');
-                if (savedTheme) {
-                    this.changeTheme(savedTheme);
+            openMenu(menu) {
+                this.activeMenu = menu;
+            },
+            closeMenus() {
+                this.activeMenu = null;
+            },
+            toggleMobileMenu() {
+                this.mobileMenuOpen = !this.mobileMenuOpen;
+            },
+            changeTheme(color) {
+                const root = document.documentElement;
+                
+                // Reset to default
+                root.style.setProperty('--secondary', '#c0b561');
+                root.style.setProperty('--primary', '#373a36');
+                document.body.style.backgroundColor = '#ffffff';
+                
+                // Apply new theme color
+                switch(color) {
+                    case 'green':
+                        root.style.setProperty('--secondary', 'var(--theme-green)');
+                        root.style.setProperty('--primary', 'var(--theme-green-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-green-bg)';
+                        break;
+                    case 'blue':
+                        root.style.setProperty('--secondary', 'var(--theme-blue)');
+                        root.style.setProperty('--primary', 'var(--theme-blue-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-blue-bg)';
+                        break;
+                    case 'red':
+                        root.style.setProperty('--secondary', 'var(--theme-red)');
+                        root.style.setProperty('--primary', 'var(--theme-red-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-red-bg)';
+                        break;
+                    case 'pink':
+                        root.style.setProperty('--secondary', 'var(--theme-pink)');
+                        root.style.setProperty('--primary', 'var(--theme-pink-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-pink-bg)';
+                        break;
+                    case 'brown':
+                        root.style.setProperty('--secondary', 'var(--theme-brown)');
+                        root.style.setProperty('--primary', 'var(--theme-brown-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-brown-bg)';
+                        break;
+                    case 'silver':
+                        root.style.setProperty('--secondary', 'var(--theme-silver)');
+                        root.style.setProperty('--primary', 'var(--theme-silver-primary)');
+                        document.body.style.backgroundColor = 'var(--theme-silver-bg)';
+                        break;
                 }
                 
-                document.querySelectorAll('.theme-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.changeTheme(btn.dataset.color);
-                    });
-                    btn.addEventListener('touchend', (e) => {
-                        e.preventDefault();
-                        this.changeTheme(btn.dataset.color);
-                    });
+                // Update hero background
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.backgroundColor = `var(--${color}-primary)`;
+                    hero.style.backgroundBlendMode = 'overlay';
+                }
+                
+                localStorage.setItem('selectedTheme', color);
+                this.currentTheme = color;
+            }
+        },
+        mounted() {
+            // Initialize theme from localStorage
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (savedTheme) {
+                this.changeTheme(savedTheme);
+            }
+            
+            // Add theme button event listeners
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.changeTheme(btn.dataset.color);
+                });
+                btn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.changeTheme(btn.dataset.color);
+                });
+            });
+
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const megaMenu = document.querySelector('.megaMenu');
+
+            if (mobileMenuBtn && megaMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    megaMenu.classList.toggle('active');
+                    const menuIcon = mobileMenuBtn.querySelector('.menu-icon');
+                    if (menuIcon) {
+                        menuIcon.textContent = megaMenu.classList.contains('active') ? '✕' : '☰';
+                    }
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', (event) => {
+                    if (!event.target.closest('.megaMenu') && 
+                        !event.target.closest('.mobile-menu-button')) {
+                        megaMenu.classList.remove('active');
+                        const menuIcon = mobileMenuBtn.querySelector('.menu-icon');
+                        if (menuIcon) {
+                            menuIcon.textContent = '☰';
+                        }
+                    }
                 });
             }
-        });
-    </script>
+        }
+    });
+</script>
 </body>
 </html>
