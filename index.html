@@ -353,24 +353,38 @@
     }
 
     /* Add these styles to your existing CSS */
+    /* Update these styles in your CSS section */
     .menu-dash {
         display: flex;
         flex-direction: column;
         gap: 6px;
         margin-left: 20%;
         padding: 20px 0;
+        position: relative; /* Add this */
     }
 
     .dash {
         width: 25px;
         height: 2px;
-        background-color: var(--white);
+        background-color: var(--white); /* Ensure dashes are white */
         transition: all 0.3s ease;
+    }
+
+    .menu-title {
+        position: absolute; /* Add this */
+        left: calc(100% + 15px); /* Position right after the dashes */
+        top: 50%; /* Center vertically */
+        transform: translateY(-50%); /* Center vertically */
+        color: var(--white);
+        font-size: 16px;
+        font-weight: bold;
+        white-space: nowrap;
     }
 
     .mobileNav.active .menu-dash {
         margin-bottom: 20px;
     }
+
     .btn {
         display: inline-block;
         padding: 15px 30px;
@@ -578,6 +592,7 @@
                     <span class="dash"></span>
                     <span class="dash"></span>
                     <span class="dash"></span>
+                    <span class="menu-title">MENU</span>
                 </div>
                 <nav>
                     <a href="/our-company">Our Company</a>
