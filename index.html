@@ -80,7 +80,7 @@
         right: 20px;
         display: flex;
         gap: 8px;
-        z-index: 1000;
+        z-index: 999; /* Reduced z-index to be below menu button */
         flex-wrap: wrap;
         max-width: 120px;
         justify-content: flex-end;
@@ -268,11 +268,19 @@
         font-size: 24px;
         cursor: pointer;
         position: absolute;
-        right: 15px;
+        left: 15px; /* Changed from right to left */
         top: 15px;
         z-index: 1000;
+        color: var(--white); /* Make the menu icon white */
+        padding: 10px;
     }
 
+    .menu-title {
+        margin-left: 35px;
+        color: var(--white);
+        font-size: 16px;
+        font-weight: bold;
+    }
     .menu-icon {
         color: #333;
     }
@@ -317,12 +325,26 @@
         width: 100%;
         height: 100%;
         background: var(--primary);
-        padding: 20px;
-        z-index: 1000;
+        padding: 60px 20px 20px; /* Added top padding for menu button */
+        z-index: 998;
     }
 
     .mobileNav.active {
         display: block;
+    }
+
+    .mobileNav nav {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .mobileNav nav a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .hero .container {
@@ -528,6 +550,7 @@
         </header>
         <button id="mobile-menu-btn" class="mobile-menu-button">
             <span class="menu-icon">☰</span>
+            <span class="menu-title">MENU</span>
         </button>
         <div class="mobileNav" :class="{ 'active': mobileMenuOpen }">
             <div class="container">
@@ -590,126 +613,127 @@
         </footer>
     </div>
 
- <!-- Replace the entire script section in your index.html -->
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            activeMenu: null,
-            mobileMenuOpen: false,
-            currentTheme: 'default'
-        },
-        methods: {
-            menuIsOpen(menu) {
-                return this.activeMenu === menu;
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                activeMenu: null,
+                mobileMenuOpen: false,
+                currentTheme: 'default'
             },
-            openMenu(menu) {
-                this.activeMenu = menu;
-            },
-            closeMenus() {
-                this.activeMenu = null;
-            },
-            toggleMobileMenu() {
-                this.mobileMenuOpen = !this.mobileMenuOpen;
-            },
-            changeTheme(color) {
-                const root = document.documentElement;
-                
-                // Reset to default
-                root.style.setProperty('--secondary', '#c0b561');
-                root.style.setProperty('--primary', '#373a36');
-                document.body.style.backgroundColor = '#ffffff';
-                
-                // Apply new theme color
-                switch(color) {
-                    case 'green':
-                        root.style.setProperty('--secondary', 'var(--theme-green)');
-                        root.style.setProperty('--primary', 'var(--theme-green-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-green-bg)';
-                        break;
-                    case 'blue':
-                        root.style.setProperty('--secondary', 'var(--theme-blue)');
-                        root.style.setProperty('--primary', 'var(--theme-blue-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-blue-bg)';
-                        break;
-                    case 'red':
-                        root.style.setProperty('--secondary', 'var(--theme-red)');
-                        root.style.setProperty('--primary', 'var(--theme-red-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-red-bg)';
-                        break;
-                    case 'pink':
-                        root.style.setProperty('--secondary', 'var(--theme-pink)');
-                        root.style.setProperty('--primary', 'var(--theme-pink-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-pink-bg)';
-                        break;
-                    case 'brown':
-                        root.style.setProperty('--secondary', 'var(--theme-brown)');
-                        root.style.setProperty('--primary', 'var(--theme-brown-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-brown-bg)';
-                        break;
-                    case 'silver':
-                        root.style.setProperty('--secondary', 'var(--theme-silver)');
-                        root.style.setProperty('--primary', 'var(--theme-silver-primary)');
-                        document.body.style.backgroundColor = 'var(--theme-silver-bg)';
-                        break;
-                }
-                
-                // Update hero background
-                const hero = document.querySelector('.hero');
-                if (hero) {
-                    hero.style.backgroundColor = `var(--${color}-primary)`;
-                    hero.style.backgroundBlendMode = 'overlay';
-                }
-                
-                localStorage.setItem('selectedTheme', color);
-                this.currentTheme = color;
-            }
-        },
-        mounted() {
-            // Initialize theme from localStorage
-            const savedTheme = localStorage.getItem('selectedTheme');
-            if (savedTheme) {
-                this.changeTheme(savedTheme);
-            }
-            
-            // Add theme button event listeners
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.changeTheme(btn.dataset.color);
-                });
-                btn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.changeTheme(btn.dataset.color);
-                });
-            });
-
-            // Mobile menu functionality
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const megaMenu = document.querySelector('.megaMenu');
-
-            if (mobileMenuBtn && megaMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    megaMenu.classList.toggle('active');
-                    const menuIcon = mobileMenuBtn.querySelector('.menu-icon');
+            methods: {
+                menuIsOpen(menu) {
+                    return this.activeMenu === menu;
+                },
+                openMenu(menu) {
+                    this.activeMenu = menu;
+                },
+                closeMenus() {
+                    this.activeMenu = null;
+                },
+                toggleMobileMenu() {
+                    this.mobileMenuOpen = !this.mobileMenuOpen;
+                    const menuIcon = document.querySelector('.menu-icon');
                     if (menuIcon) {
-                        menuIcon.textContent = megaMenu.classList.contains('active') ? '✕' : '☰';
+                        menuIcon.textContent = this.mobileMenuOpen ? '✕' : '☰';
                     }
+                    
+                    // Toggle mobile nav visibility
+                    const mobileNav = document.querySelector('.mobileNav');
+                    if (mobileNav) {
+                        mobileNav.classList.toggle('active', this.mobileMenuOpen);
+                    }
+                },
+                changeTheme(color) {
+                    const root = document.documentElement;
+                    
+                    // Reset to default
+                    root.style.setProperty('--secondary', '#c0b561');
+                    root.style.setProperty('--primary', '#373a36');
+                    document.body.style.backgroundColor = '#ffff';
+                    
+                    // Apply new theme color
+                    switch(color) {
+                        case 'green':
+                            root.style.setProperty('--secondary', 'var(--theme-green)');
+                            root.style.setProperty('--primary', 'var(--theme-green-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-green-bg)';
+                            break;
+                        case 'blue':
+                            root.style.setProperty('--secondary', 'var(--theme-blue)');
+                            root.style.setProperty('--primary', 'var(--theme-blue-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-blue-bg)'; // Fixed syntax
+                            break;
+                        case 'red':
+                            root.style.setProperty('--secondary', 'var(--theme-red)');
+                            root.style.setProperty('--primary', 'var(--theme-red-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-red-bg)';
+                            break;
+                        case 'pink':
+                            root.style.setProperty('--secondary', 'var(--theme-pink)');
+                            root.style.setProperty('--primary', 'var(--theme-pink-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-pink-bg)';
+                            break;
+                        case 'brown':
+                            root.style.setProperty('--secondary', 'var(--theme-brown)');
+                            root.style.setProperty('--primary', 'var(--theme-brown-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-brown-bg)';
+                            break;
+                        case 'silver':
+                            root.style.setProperty('--secondary', 'var(--theme-silver)');
+                            root.style.setProperty('--primary', 'var(--theme-silver-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-silver-bg)';
+                            break;
+                    }
+                    
+                    // Update hero background
+                    const hero = document.querySelector('.hero');
+                    if (hero) {
+                        hero.style.backgroundColor = `var(--${color}-primary)`;
+                        hero.style.backgroundBlendMode = 'overlay';
+                    }
+                    
+                    localStorage.setItem('selectedTheme', color);
+                    this.currentTheme = color;
+                }
+            },
+            mounted() {
+                // Initialize theme from localStorage
+                const savedTheme = localStorage.getItem('selectedTheme');
+                if (savedTheme) {
+                    this.changeTheme(savedTheme);
+                }
+                
+                // Add theme button event listeners
+                document.querySelectorAll('.theme-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.changeTheme(btn.dataset.color);
+                    });
+                    btn.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        this.changeTheme(btn.dataset.color);
+                    });
                 });
-
-                // Close menu when clicking outside
-                document.addEventListener('click', (event) => {
-                    if (!event.target.closest('.megaMenu') && 
-                        !event.target.closest('.mobile-menu-button')) {
-                        megaMenu.classList.remove('active');
-                        const menuIcon = mobileMenuBtn.querySelector('.menu-icon');
-                        if (menuIcon) {
-                            menuIcon.textContent = '☰';
+        
+                // Mobile menu functionality
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent event bubbling
+                        this.toggleMobileMenu();
+                    });
+        
+                    // Close menu when clicking outside
+                    document.addEventListener('click', (event) => {
+                        if (!event.target.closest('.mobileNav') && 
+                            !event.target.closest('.mobile-menu-button') && 
+                            this.mobileMenuOpen) {
+                            this.toggleMobileMenu();
                         }
-                    }
-                });
+                    });
+                }
             }
-        }
-    });
-</script>
+        });
+        </script>
 </body>
 </html>
