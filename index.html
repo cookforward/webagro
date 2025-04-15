@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT. JAYA AGRO SOLUSINDO | Premium Spice Exporters</title>
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+<style>
+    :root {
+        --primary: #373a36;
+        --secondary: #c0b561;
+        --white: #ffff;
+        --black: #0000;
+        --gray: #f5f5f5;
+
+        /* Theme Colors (Pastel) with background and primary pairs */
+        --theme-green: #98c1a2;
+        --theme-green-bg: #f0f7f2;
+        --theme-green-primary: #2c3a2f;
+        
+        --theme-blue: #a7c7e7;
+        --theme-blue-bg: #f0f5fa;
+        --theme-blue-primary: #2c3543;
+        
+        --theme-red: #ffb3b3;
+        --theme-red-bg: #fff0f0;
+        --theme-red-primary: #3a2c2c;
+        
+        --theme-pink: #ffd1dc;
+        --theme-pink-bg: #fff5f7;
+        --theme-pink-primary: #3a2c33;
+        
+        --theme-brown: #c4a484;
+        --theme-brown-bg: #f7f3ef;
+        --theme-brown-primary: #352c25;
+        
+        --theme-silver: #c9c9c9;
+        --theme-silver-bg: #f5f5f5;
+        --theme-silver-primary: #333333;
+    }
+
+    header, .megaMenu, .mobileNav, .footer {
+        background: var(--primary);
+        transition: background-color 0.3s ease;
+    }
+
+    .hero {
+        position: relative;
+        min-height: 600px;
+        background-size: cover;
+        background-position: center;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        text-align: center;
+        padding: 60px 0;
+        background-blend-mode: overlay;
+        transition: all 0.3s ease;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+        transition: background-color 0.3s ease;
+    }
+
+    .btn {
+        background: var(--secondary);
+        transition: all 0.3s ease;
+    }
+
+    .theme-switcher {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 8px;
+        z-index: 1000;
+        flex-wrap: wrap;
+        max-width: 120px;
+        justify-content: flex-end;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 8px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .theme-btn {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .theme-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .theme-btn[data-color="green"] { background-color: var(--theme-green); }
+    .theme-btn[data-color="blue"] { background-color: var(--theme-blue); }
+    .theme-btn[data-color="red"] { 
+        background-color: var(--theme-red); 
+        border-color: #ffaaaa;
+    }
+    .theme-btn[data-color="pink"] { 
+        background-color: var(--theme-pink);
+        border-color: #ffccd1;
+    }
+    .theme-btn[data-color="brown"] { background-color: var(--theme-brown); }
+    .theme-btn[data-color="silver"] { background-color: var(--theme-silver); }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    header {
+        background: var(--primary);
+        padding: 20px 0;
+        position: relative;
+        overflow: visible;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo img {
+        height: 60px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        position: static;
+    }
+
+    nav > li {
+        list-style: none;
+        position: static;
+    }
+
+    nav > li > a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 16px;
+        padding: 10px 0;
+        display: block;
+        transition: color 0.3s;
+    }
+
+    nav > li > a:hover {
+        color: var(--secondary);
+    }
+
+    .megaMenu {
+        display: none;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        background: var(--primary);
+        padding: 40px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        z-index: 100;
+        margin-top: 20px;
+    }
+
+    .megaMenu::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+    }
+
+    .menuOpen .megaMenu {
+        display: block;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 30px;
+    }
+
+    .col-md-4 { grid-column: span 4; }
+    .col-md-3 { grid-column: span 3; }
+    .col-md-5 { grid-column: span 5; }
+
+    .megaMenu h2 {
+        color: var(--white);
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .megaMenu ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .megaMenu ul li {
+        margin-bottom: 15px;
+    }
+
+    .megaMenu ul li a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.3s;
+    }
+
+    .megaMenu ul li a:hover {
+        color: var(--secondary);
+    }
+
+    .megaMenu p {
+        color: var(--white);
+        opacity: 0.8;
+        margin-bottom: 20px;
+    }
+
+    .megaMenu img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .mobileTrigger {
+        display: none;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        color: var(--white);
+    }
+
+    .mobileNav {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary);
+        padding: 20px;
+        z-index: 1000;
+    }
+
+    .mobileNav.active {
+        display: block;
+    }
+
+    .hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 15px 30px;
+        background: var(--secondary);
+        color: var(--white);
+        text-decoration: none;
+        margin-top: 20px;
+        transition: background 0.3s;
+    }
+
+    .footer {
+        background: var(--primary);
+        color: var(--white);
+        padding: 60px 0 20px;
+        margin-top: 60px;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px;
+        margin-bottom: 40px;
+        padding: 0 20px;
+    }
+
+    .footer-col {
+        padding-right: 20px;
+    }
+
+    .footer-col h3 {
+        color: var(--secondary);
+        margin-bottom: 20px;
+        font-size: 18px;
+        transition: color 0.3s ease;
+    }
+
+    .footer-col ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-col ul li {
+        margin-bottom: 12px;
+    }
+
+    .footer-col ul li a {
+        color: var(--white);
+        text-decoration: none;
+        transition: opacity 0.3s;
+        font-size: 14px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding: 20px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        margin-top: 20px;
+    }
+
+    .hero, .header, .footer, .megaMenu {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .theme-switcher {
+            top: 10px;
+            right: 10px;
+            max-width: 100px;
+            gap: 6px;
+        }
+
+        .theme-btn {
+            width: 20px;
+            height: 20px;
+        }
+        .navContainer {
+            display: none;
+        }
+
+        .mobileTrigger {
+            display: block;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        [class*="col-"] {
+            grid-column: span 12;
+        }
+
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .footer-col {
+            padding-right: 0;
+        }
+    }
+</style>
+</head>
+<body>
+    <div id="app">
+        <div class="theme-switcher">
+            <button class="theme-btn" data-color="green" title="Pastel Green"></button>
+            <button class="theme-btn" data-color="blue" title="Pastel Blue"></button>
+            <button class="theme-btn" data-color="red" title="Pastel Red"></button>
+            <button class="theme-btn" data-color="pink" title="Pastel Pink"></button>
+            <button class="theme-btn" data-color="brown" title="Pastel Brown"></button>
+            <button class="theme-btn" data-color="silver" title="Pastel Silver"></button>
+        </div>    
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <img src="https://placehold.co/200x60/373a36/ffff?text=JAS" alt="JAS Logo">
+                </div>
+                <div class="navContainer">
+                    <nav @mouseleave="closeMenus">
+                        <li :class="{ 'menuOpen': menuIsOpen('company') }" 
+                            @mouseover="openMenu('company')">
+                            <a href="/our-company">Our Company</a>
+                            <div class="megaMenu" v-if="menuIsOpen('company')">
+                                <div class="container">
+                                    <div class="grid">
+                                        <div class="col-md-4">
+                                            <h2>Our Company</h2>
+                                            <p>Leading Indonesian spice exporter committed to quality and sustainability.</p>
+                                            <ul>
+                                                <li><a href="/who-we-are">Who We Are</a></li>
+                                                <li><a href="/our-history">Our History</a></li>
+                                                <li><a href="/quality-assurance">Quality Assurance</a></li>
+                                                <li><a href="/sustainability">Sustainability</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h2>Responsible Business</h2>
+                                            <ul>
+                                                <li><a href="/people">People</a></li>
+                                                <li><a href="/planet">Planet</a></li>
+                                                <li><a href="/place">Place</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <img src="https://placehold.co/400x300" alt="Company">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li :class="{ 'menuOpen': menuIsOpen('products') }"
+                            @mouseover="openMenu('products')">
+                            <a href="/products">Our Products</a>
+                            <div class="megaMenu" v-if="menuIsOpen('products')">
+                                <div class="container">
+                                    <div class="grid">
+                                        <div class="col-md-4">
+                                            <h2>Our Products</h2>
+                                            <p>Premium quality Indonesian spices for global markets.</p>
+                                            <ul>
+                                                <li><a href="/black-pepper">Black Pepper</a></li>
+                                                <li><a href="/white-pepper">White Pepper</a></li>
+                                                <li><a href="/Seaweed">Seaweed</a></li>
+                                                <li><a href="/nutmeg">Nutmeg</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h2>Categories</h2>
+                                            <ul>
+                                                <li><a href="/whole-spices">Whole Spices</a></li>
+                                                <li><a href="/ground-spices">Ground Spices</a></li>
+                                                <li><a href="/organic-spices">Organic Spices</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <img src="https://placehold.co/400x300" alt="Products">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="/contact">Contact Us</a></li>
+                    </nav>
+                </div>
+                <div class="mobileTrigger" @click="toggleMobileMenu">
+                    Menu
+                </div>
+            </div>
+        </header>
+
+        <div class="mobileNav" :class="{ 'active': mobileMenuOpen }">
+            <div class="container">
+                <nav>
+                    <a href="/our-company">Our Company</a>
+                    <a href="/products">Our Products</a>
+                    <a href="/contact">Contact Us</a>
+                </nav>
+            </div>
+        </div>
+
+        <section class="hero" style="background-image: url('https://placehold.co/1920x1080')">
+            <div class="container">
+                <h1>Premium Indonesian Spices</h1>
+                <p>Delivering quality spices to global markets</p>
+                <a href="/products" class="btn">Explore Our Products</a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h3>About Us</h3>
+                        <ul>
+                            <li><a href="/who-we-are">Who We Are</a></li>
+                            <li><a href="/our-history">Our History</a></li>
+                            <li><a href="/quality-assurance">Quality Assurance</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Our Products</h3>
+                        <ul>
+                            <li><a href="/black-pepper">Black Pepper</a></li>
+                            <li><a href="/white-pepper">White Pepper</a></li>
+                            <li><a href="/Seaweed">Seaweed</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Contact</h3>
+                        <ul>
+                            <li><a href="tel:+6221234567">+62 21 234 567</a></li>
+                            <li><a href="mailto:info@jayaagrosolusindo.com">info@jayaagrosolusindo.com</a></li>
+                            <li>Jakarta, Indonesia</li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Follow Us</h3>
+                        <ul>
+                            <li><a href="#">LinkedIn</a></li>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 PT. JAYA AGRO SOLUSINDO. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                activeMenu: null,
+                mobileMenuOpen: false,
+                currentTheme: 'default'
+            },
+            methods: {
+                menuIsOpen(menu) {
+                    return this.activeMenu === menu;
+                },
+                openMenu(menu) {
+                    this.activeMenu = menu;
+                },
+                closeMenus() {
+                    this.activeMenu = null;
+                },
+                toggleMobileMenu() {
+                    this.mobileMenuOpen = !this.mobileMenuOpen;
+                },
+                changeTheme(color) {
+                    const root = document.documentElement;
+                    
+                    // Reset to default
+                    root.style.setProperty('--secondary', '#c0b561');
+                    root.style.setProperty('--primary', '#373a36');
+                    document.body.style.backgroundColor = '#ffffff';
+                    
+                    // Apply new theme color
+                    switch(color) {
+                        case 'green':
+                            root.style.setProperty('--secondary', 'var(--theme-green)');
+                            root.style.setProperty('--primary', 'var(--theme-green-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-green-bg)';
+                            break;
+                        case 'blue':
+                            root.style.setProperty('--secondary', 'var(--theme-blue)');
+                            root.style.setProperty('--primary', 'var(--theme-blue-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-blue-bg)';
+                            break;
+                        case 'red':
+                            root.style.setProperty('--secondary', 'var(--theme-red)');
+                            root.style.setProperty('--primary', 'var(--theme-red-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-red-bg)';
+                            break;
+                        case 'pink':
+                            root.style.setProperty('--secondary', 'var(--theme-pink)');
+                            root.style.setProperty('--primary', 'var(--theme-pink-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-pink-bg)';  // Removed extra parenthesis
+                            break;
+                        case 'brown':
+                            root.style.setProperty('--secondary', 'var(--theme-brown)');
+                            root.style.setProperty('--primary', 'var(--theme-brown-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-brown-bg)';
+                            break;
+                        case 'silver':
+                            root.style.setProperty('--secondary', 'var(--theme-silver)');
+                            root.style.setProperty('--primary', 'var(--theme-silver-primary)');
+                            document.body.style.backgroundColor = 'var(--theme-silver-bg)';
+                            break;
+                    }
+                    
+                    // Update hero background
+                    const hero = document.querySelector('.hero');
+                    if (hero) {
+                        hero.style.backgroundColor = `var(--${color}-primary)`;
+                        hero.style.backgroundBlendMode = 'overlay';
+                    }
+                    
+                    localStorage.setItem('selectedTheme', color);
+                    this.currentTheme = color;
+                }
+            },  // Added comma here
+            mounted() {
+                const savedTheme = localStorage.getItem('selectedTheme');
+                if (savedTheme) {
+                    this.changeTheme(savedTheme);
+                }
+                
+                document.querySelectorAll('.theme-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.changeTheme(btn.dataset.color);
+                    });
+                    btn.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        this.changeTheme(btn.dataset.color);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
