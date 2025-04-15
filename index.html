@@ -265,14 +265,15 @@
         display: none;
         background: none;
         border: none;
-        font-size: 24px;
         cursor: pointer;
         position: absolute;
-        left: 15px; /* Changed from right to left */
+        left: 15px;
         top: 15px;
         z-index: 1000;
-        color: var(--white); /* Make the menu icon white */
         padding: 10px;
+        display: flex;
+        align-items: center; /* Add this to align items vertically */
+        gap: 8px; /* Add small gap between icon and text */
     }
 
     .menu-title {
@@ -282,7 +283,10 @@
         font-weight: bold;
     }
     .menu-icon {
-        color: #333;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     /* Hide mega menu by default on mobile */
@@ -355,12 +359,10 @@
     /* Add these styles to your existing CSS */
     /* Update these styles in your CSS section */
     .menu-dash {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-left: 20%;
-        padding: 20px 0;
-        position: relative; /* Add this */
+        width: 20px;
+        height: 2px;
+        background-color: var(--white);
+        transition: all 0.3s ease;
     }
 
     .dash {
@@ -371,14 +373,10 @@
     }
 
     .menu-title {
-        position: absolute; /* Add this */
-        left: calc(100% + 15px); /* Position right after the dashes */
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Center vertically */
         color: var(--white);
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
-        white-space: nowrap;
+        margin-left: 12px; /* Reduce margin to bring text closer */
     }
 
     .mobileNav.active .menu-dash {
