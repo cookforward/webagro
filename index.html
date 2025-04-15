@@ -352,6 +352,25 @@
         z-index: 1;
     }
 
+    /* Add these styles to your existing CSS */
+    .menu-dash {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-left: 20%;
+        padding: 20px 0;
+    }
+
+    .dash {
+        width: 25px;
+        height: 2px;
+        background-color: var(--white);
+        transition: all 0.3s ease;
+    }
+
+    .mobileNav.active .menu-dash {
+        margin-bottom: 20px;
+    }
     .btn {
         display: inline-block;
         padding: 15px 30px;
@@ -552,8 +571,14 @@
             <span class="menu-icon">☰</span>
             <span class="menu-title">MENU</span>
         </button>
+        <!-- Update the mobile navigation HTML -->
         <div class="mobileNav" :class="{ 'active': mobileMenuOpen }">
             <div class="container">
+                <div class="menu-dash">
+                    <span class="dash"></span>
+                    <span class="dash"></span>
+                    <span class="dash"></span>
+                </div>
                 <nav>
                     <a href="/our-company">Our Company</a>
                     <a href="/products">Our Products</a>
